@@ -20,7 +20,7 @@ public class UserRegistrationController {
         RegistrationResponse registrationResponse = new RegistrationResponse();
         registrationResponse.setStatusCode(200);
         registrationResponse.setStatusMessage("Success");
-        return new User("Akshay","Ayyanchira","ayyanch@gmail.com","Admin","password");
+           return new User("Akshay1","Ayyanchira","ayyanch@gmail.com","Admin","password");
     }
 
 }
