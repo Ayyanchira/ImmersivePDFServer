@@ -16,10 +16,6 @@ public class UserRegistrationController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     @CrossOrigin(origins = "http://localhost:3000")
     public User registerUser(){
-
-        RegistrationResponse registrationResponse = new RegistrationResponse();
-        registrationResponse.setStatusCode(200);
-        registrationResponse.setStatusMessage("Success");
            return new User("Akshay1","Ayyanchira","ayyanch@gmail.com","Admin","password");
     }
 
