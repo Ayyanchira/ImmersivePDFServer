@@ -1,5 +1,6 @@
 package com.ssdi.immersivepdf.model;
 
+//@JsonInclude(Include.NON_NULL)
 public class RegistrationRequest {
     private User user;
 
