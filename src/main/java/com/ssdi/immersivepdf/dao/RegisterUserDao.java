@@ -1,6 +1,6 @@
 package com.ssdi.immersivepdf.dao;
 
-import com.ssdi.immersivepdf.model.User;
+import com.ssdi.immersivepdf.model.Register.User;
 import com.ssdi.immersivepdf.util.DBConnector;
 
 import java.sql.*;

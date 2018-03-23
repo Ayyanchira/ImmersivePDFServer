@@ -1,4 +1,4 @@
-package com.ssdi.immersivepdf.model;
+package com.ssdi.immersivepdf.model.Register;
 
 public class User {
     private String firstname;

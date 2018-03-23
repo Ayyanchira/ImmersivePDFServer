@@ -1,4 +1,4 @@
-package com.ssdi.immersivepdf.model;
+package com.ssdi.immersivepdf.model.Login;
 
 public class Login {
     private String email;

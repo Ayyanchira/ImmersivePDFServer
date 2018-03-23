@@ -1,4 +1,4 @@
-package com.ssdi.immersivepdf.model;
+package com.ssdi.immersivepdf.model.Register;
 
 public class RegistrationResponse {
     private int statusCode;

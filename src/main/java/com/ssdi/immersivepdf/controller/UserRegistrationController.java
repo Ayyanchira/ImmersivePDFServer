@@ -2,8 +2,8 @@ package com.ssdi.immersivepdf.controller;
 
 
 import com.ssdi.immersivepdf.dao.RegisterUserDao;
-import com.ssdi.immersivepdf.model.RegistrationResponse;
-import com.ssdi.immersivepdf.model.User;
+import com.ssdi.immersivepdf.model.Register.RegistrationResponse;
+import com.ssdi.immersivepdf.model.Register.User;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
 
