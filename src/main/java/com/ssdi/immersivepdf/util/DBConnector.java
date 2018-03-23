@@ -14,7 +14,7 @@ public class DBConnector {
         if (connection == null||connection.isClosed()){
             try {
                 connection = DriverManager.
-                        getConnection("jdbc:mysql://" + "13.59.54.128" + ":" + 3306 + "/" + "ImmersivePDF", "roots", "syntel123$");
+                        getConnection("jdbc:mysql://" + "13.59.54.128" + ":" + 3306 + "/" + "ImmersivePDF", "root", "syntel123$");
             } catch (SQLException e) {
                 System.out.println("Connection Failed!:\n" + e.getMessage());
             }

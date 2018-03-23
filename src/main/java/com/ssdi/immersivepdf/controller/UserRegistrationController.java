@@ -18,7 +18,7 @@ public class UserRegistrationController {
 
         RegisterUserDao registerUserDao =  new RegisterUserDao();
         RegistrationResponse response = new RegistrationResponse();
-        if (registerUserDao.register(request)){
+        if (registerUserDao.register(request) == 200){
              response.setStatusMessage("Success");
              response.setStatusCode(200);
         }

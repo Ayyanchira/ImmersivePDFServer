@@ -8,7 +8,7 @@ import java.sql.*;
 
 public class RegisterUserDao {
 
-    public boolean register(User user){
+    public int register(User user){
         try {
             Connection connection = DBConnector.getConnection();
             String sql = "INSERT INTO USER(firstname,lastname,email,role,password) VALUES(?,?,?,?,?)";
@@ -19,12 +19,15 @@ public class RegisterUserDao {
             pstmt.setString(4, user.getRole());
             pstmt.setString(5, user.getPassword());
             pstmt.executeUpdate();
-            return true;
+            return 200;
             /* connection.close(); */
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+        } catch (SQLException sqlError) {
+            if (sqlError.getErrorCode() == 1062){
+                return 401;
+            }else{
+                return 402;
+            }
         }
     }
 }
