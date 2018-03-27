@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserRegistrationController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    //@CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000")
     public RegistrationResponse registerUser(@RequestBody User request){
         System.out.println("Registering new user...");
 

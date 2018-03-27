@@ -16,7 +16,7 @@ public class RegisterUserDao {
             pstmt.setString(1, user.getFirstname());
             pstmt.setString(2, user.getLastname());
             pstmt.setString(3, user.getEmail());
-            pstmt.setString(4, user.getRole());
+            pstmt.setString(4, "User");
             pstmt.setString(5, user.getPassword());
             pstmt.executeUpdate();
             return 200;
