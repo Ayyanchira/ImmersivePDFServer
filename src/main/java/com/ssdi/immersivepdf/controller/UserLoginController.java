@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserLoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LoginResponse loginUser(@RequestBody Login request) {
-        System.out.println("Registering new user...");
+        System.out.println("User login");
 
         LoginUserDao loginUserDao = new LoginUserDao();
         LoginResponse response = new LoginResponse();
