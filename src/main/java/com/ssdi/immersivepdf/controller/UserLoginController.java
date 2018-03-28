@@ -2,7 +2,6 @@ package com.ssdi.immersivepdf.controller;
 import com.ssdi.immersivepdf.dao.LoginUserDao;
 import com.ssdi.immersivepdf.model.Login.LoginResponse;
 import com.ssdi.immersivepdf.model.Login.Login;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

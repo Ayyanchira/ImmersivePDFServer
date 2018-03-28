@@ -23,7 +23,7 @@ public class LoginUserDaoTest {
     }
 
     @Test
-    public void loginAnEmailId() {
+    public void loginEmailId() {
         Login login = new Login();
         login.setEmail("robertdowney@gmail.com");
         login.setPassword("password");

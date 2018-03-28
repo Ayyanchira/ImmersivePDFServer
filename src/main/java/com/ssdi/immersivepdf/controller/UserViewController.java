@@ -4,7 +4,6 @@ import com.ssdi.immersivepdf.dao.ViewUserDao;
 import com.ssdi.immersivepdf.model.View.Books;
 import com.ssdi.immersivepdf.model.View.ViewResponse;
 import com.ssdi.immersivepdf.model.View.View;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
