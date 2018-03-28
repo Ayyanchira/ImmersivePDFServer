@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@SpringBootApplication
 public class UserRegistrationController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)

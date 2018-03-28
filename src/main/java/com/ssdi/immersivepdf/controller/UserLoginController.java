@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@SpringBootApplication
 public class UserLoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LoginResponse loginUser(@RequestBody Login request) {
