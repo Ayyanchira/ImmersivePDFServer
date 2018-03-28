@@ -18,13 +18,15 @@ public class UserRegistrationController {
 
         RegisterUserDao registerUserDao =  new RegisterUserDao();
         RegistrationResponse response = new RegistrationResponse();
-        if (registerUserDao.register(request) == 200){
+        int result = registerUserDao.register(request);
+        response.setStatusCode(result);
+        if (result == 200){
              response.setStatusMessage("Success");
-             response.setStatusCode(200);
+        }else if(result == 401){
+            response.setStatusMessage("Email already registered.");
         }
         else {
             response.setStatusMessage("Failed");
-            response.setStatusCode(400);
         }
         return response;
            //return new User("Akshay1","Ayyanchira","ayyanch@gmail.com","Admin","password");
