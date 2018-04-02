@@ -4,18 +4,23 @@ package com.ssdi.immersivepdf.controller;
 import com.ssdi.immersivepdf.dao.RegisterUserDao;
 import com.ssdi.immersivepdf.model.Register.RegistrationResponse;
 import com.ssdi.immersivepdf.model.Register.User;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Configuration
+@EnableAutoConfiguration
 public class UserRegistrationController {
+
+    private RegisterUserDao registerUserDao;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @CrossOrigin(origins = "http://localhost:3000")
     public RegistrationResponse registerUser(@RequestBody User request){
         System.out.println("Registering new user...");
-
-        RegisterUserDao registerUserDao =  new RegisterUserDao();
+        registerUserDao =  new RegisterUserDao();
         RegistrationResponse response = new RegistrationResponse();
         int result = registerUserDao.register(request);
         response.setStatusCode(result);

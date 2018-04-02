@@ -1,16 +1,20 @@
 package com.ssdi.immersivepdf.dao;
 
 import com.ssdi.immersivepdf.model.Register.User;
+import com.ssdi.immersivepdf.util.ConnectionData;
 import com.ssdi.immersivepdf.util.DBConnector;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import java.sql.*;
 
-
+@EnableAutoConfiguration
 public class RegisterUserDao {
 
+    private ConnectionData connectionData;
     public int register(User user){
+        connectionData = new ConnectionData();
         try {
-            Connection connection = DBConnector.getConnection();
+            Connection connection = DBConnector.getConnection(connectionData);
             String sql = "INSERT INTO USER(firstname,lastname,email,role,password) VALUES(?,?,?,?,?)";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, user.getFirstname());
