@@ -1,6 +1,7 @@
 package com.ssdi.immersivepdf.dao;
 
 import com.ssdi.immersivepdf.model.Login.Login;
+import com.ssdi.immersivepdf.util.ConnectionData;
 import com.ssdi.immersivepdf.util.DBConnector;
 
 import java.sql.Connection;
@@ -10,9 +11,11 @@ import java.sql.SQLException;
 
 public class LoginUserDao {
 
+    private ConnectionData connectionData;
     public boolean login(Login login){
+        connectionData = new ConnectionData();
         try {
-            Connection connection = DBConnector.getConnection();
+            Connection connection = DBConnector.getConnection(connectionData);
             String sql = "SELECT * FROM USER WHERE email=? AND password=?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, login.getEmail());

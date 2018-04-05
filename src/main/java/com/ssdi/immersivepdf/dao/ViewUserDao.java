@@ -3,6 +3,7 @@ package com.ssdi.immersivepdf.dao;
 import com.ssdi.immersivepdf.model.View.Book;
 import com.ssdi.immersivepdf.model.View.Books;
 import com.ssdi.immersivepdf.model.View.View;
+import com.ssdi.immersivepdf.util.ConnectionData;
 import com.ssdi.immersivepdf.util.DBConnector;
 
 import java.sql.Connection;
@@ -12,9 +13,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ViewUserDao {
+
+    private ConnectionData connectionData;
     public Books view(View view){
+        connectionData = new ConnectionData();
         try {
-            Connection connection = DBConnector.getConnection();
+            Connection connection = DBConnector.getConnection(connectionData);
             String sql = "SELECT * FROM BOOKS WHERE userid = (SELECT userid from USER WHERE email=?)";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, view.getEmail());
