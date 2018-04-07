@@ -11,9 +11,10 @@ public class DBConnectorTest {
 
     @Test
     public void getConnection() {
+        TestConnectionData connectionData = new TestConnectionData();
         System.out.println("----Testing DB Util -> getConnection()");
             try {
-                Connection connection = DBConnector.getConnection();
+                Connection connection = DBConnector.getConnection(connectionData);
                 assertTrue(connection != null);
                 System.out.println("DB Connection util is working properly");
             } catch (SQLException e) {

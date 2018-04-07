@@ -2,6 +2,7 @@ package com.ssdi.immersivepdf.dao;
 
 import com.ssdi.immersivepdf.model.Register.User;
 import com.ssdi.immersivepdf.util.DBConnector;
+import com.ssdi.immersivepdf.util.TestConnectionData;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,9 +14,11 @@ import static org.junit.Assert.*;
 public class RegisterUserDaoTest {
 
     Connection connection;
+    TestConnectionData connectionData;
     @Before
     public void setUp() throws Exception {
-        connection = DBConnector.getConnection();
+        connectionData = new TestConnectionData();
+        connection = DBConnector.getConnection(connectionData);
     }
 
     @After
