@@ -51,12 +51,6 @@ public class AmazonClient {
         return convFile;
     }
 
-//    private void uploadFileTos3bucket(String fileName, File file) {
-//
-//        s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
-//                .withCannedAcl(CannedAccessControlList.PublicRead));
-//    }
-
     public FileEntity uploadFile(MultipartFile multipartFile) {
         FileEntity fileEntity = new FileEntity();
         fileEntity.filePath = "";
@@ -105,23 +99,6 @@ public class AmazonClient {
         return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
     }
 
-    /*
-     try {
-            s3client.putObject(new PutObjectRequest(bucketName, keyName, fileToUpload));
-            logger.info("===================== Upload File - Done! =====================");
-
-        } catch (AmazonServiceException ase) {
-            logger.info("Caught an AmazonServiceException from PUT requests, rejected reasons:");
-            logger.info("Error Message:    " + ase.getMessage());
-            logger.info("HTTP Status Code: " + ase.getStatusCode());
-            logger.info("AWS Error Code:   " + ase.getErrorCode());
-            logger.info("Error Type:       " + ase.getErrorType());
-            logger.info("Request ID:       " + ase.getRequestId());
-        } catch (AmazonClientException ace) {
-            logger.info("Caught an AmazonClientException: ");
-            logger.info("Error Message: " + ace.getMessage());
-        }
-     */
 }
 
 
