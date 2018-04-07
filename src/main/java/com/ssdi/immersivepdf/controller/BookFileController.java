@@ -1,53 +1,54 @@
 package com.ssdi.immersivepdf.controller;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ssdi.immersivepdf.dao.BookEntryDao;
+import com.ssdi.immersivepdf.model.fileUpload.FileEntity;
+import com.ssdi.immersivepdf.model.generic.Response;
 import com.ssdi.immersivepdf.service.AmazonClient;
-import com.ssdi.immersivepdf.service.S3Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/storage/")
 public class BookFileController {
 
     private AmazonClient amazonClient;
+    private BookEntryDao bookEntryDao;
 
     @Autowired
     BookFileController(AmazonClient client) {
         this.amazonClient = client;
     }
-
-    @Autowired
-    S3Services s3Services;
+//    BookFileController(BookEntryDao bookEntryDao) {this.bookEntryDao = bookEntryDao;}
 
     @PostMapping("/uploadFile")
-    public String uploadFile(@RequestPart(value = "file") MultipartFile file) {
-        String filename = file.getName();
-        File fileToUpload = null;
-        try {
-            fileToUpload = convertMultiPartToFile(file);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public Response uploadFile(@RequestPart(value = "file") MultipartFile file, String fileName, String description, int userID) {
+
+        Response response = new Response();
+        //Attempt File Uploading
+        FileEntity fileUploadStatusObject = this.amazonClient.uploadFile(file);
+
+        if (fileUploadStatusObject.statusCode == 200){
+            //store the filePath in books table
+            BookEntryDao bookEntryDao = new BookEntryDao();
+            int fileUpdateDaoStatus = bookEntryDao.enterNewBook(fileName,fileUploadStatusObject.filePath,description,userID);
+            if (fileUpdateDaoStatus == 200){
+                response.setStatusCode(200);
+                response.setStatusMessage("File successfully uploaded");
+            }else {
+                response.setStatusCode(303);
+                response.setStatusMessage("File upload Failed.");
+                System.out.println("File uploaded to Amazon S3 bucket. But Failed to update database.");
+                //TO DO : Delete file from S3 bucket
+            }
+        }else{
+            response.setStatusCode(303);
+            response.setStatusMessage("File upload failed");
+            System.out.println("Upload to Amazon S3 failed");
         }
-        s3Services.uploadFile(filename,fileToUpload);
-        System.out.println("File Upload Successful");
-        return this.amazonClient.uploadFile(file);
+        return response;
     }
 
-    private File convertMultiPartToFile(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
-        fos.close();
-        return convFile;
-    }
 
 
     @DeleteMapping("/deleteFile")

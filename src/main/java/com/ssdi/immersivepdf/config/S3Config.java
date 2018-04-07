@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+//Currently not used in the class but the Amazon client initialization code can be used in future sprint
 @Configuration
 public class S3Config {
     @Value("${amazonProperties.accessKey}")
