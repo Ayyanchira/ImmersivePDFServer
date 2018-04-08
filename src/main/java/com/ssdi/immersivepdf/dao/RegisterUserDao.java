@@ -4,10 +4,11 @@ import com.ssdi.immersivepdf.model.Register.User;
 import com.ssdi.immersivepdf.util.ConnectionData;
 import com.ssdi.immersivepdf.util.DBConnector;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 
-@EnableAutoConfiguration
+@Service
 public class RegisterUserDao {
 
     private ConnectionData connectionData;

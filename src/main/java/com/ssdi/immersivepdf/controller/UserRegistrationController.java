@@ -2,26 +2,21 @@ package com.ssdi.immersivepdf.controller;
 
 
 import com.ssdi.immersivepdf.dao.RegisterUserDao;
-import com.ssdi.immersivepdf.model.Register.RegistrationResponse;
 import com.ssdi.immersivepdf.model.Register.User;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Configuration;
+import com.ssdi.immersivepdf.model.generic.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@Configuration
-@EnableAutoConfiguration
 public class UserRegistrationController {
 
+    @Autowired
     private RegisterUserDao registerUserDao;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @CrossOrigin(origins = "http://localhost:3000")
-    public RegistrationResponse registerUser(@RequestBody User request){
-        System.out.println("Registering new user...");
-        registerUserDao =  new RegisterUserDao();
-        RegistrationResponse response = new RegistrationResponse();
+    public Response registerUser(@RequestBody User request){
+        Response response = new Response();
         int result = registerUserDao.register(request);
         response.setStatusCode(result);
         if (result == 200){
@@ -33,7 +28,6 @@ public class UserRegistrationController {
             response.setStatusMessage("Failed");
         }
         return response;
-           //return new User("Akshay1","Ayyanchira","ayyanch@gmail.com","Admin","password");
     }
 
 }
