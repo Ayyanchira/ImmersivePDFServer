@@ -7,6 +7,15 @@ public class Book {
     int userid;
     String location;
     int bookmark;
+    Boolean isfavorite;
+
+    public Boolean getIsfavorite() {
+        return isfavorite;
+    }
+
+    public void setIsfavorite(Boolean isfavorite) {
+        this.isfavorite = isfavorite;
+    }
 
     public int getBookid() {
         return bookid;
