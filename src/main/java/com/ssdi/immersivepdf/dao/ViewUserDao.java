@@ -1,8 +1,8 @@
 package com.ssdi.immersivepdf.dao;
 
+import com.ssdi.immersivepdf.model.Register.User;
 import com.ssdi.immersivepdf.model.View.Book;
 import com.ssdi.immersivepdf.model.View.Books;
-import com.ssdi.immersivepdf.model.View.View;
 import com.ssdi.immersivepdf.util.ConnectionData;
 import com.ssdi.immersivepdf.util.DBConnector;
 import org.springframework.stereotype.Service;
@@ -17,13 +17,13 @@ import java.util.ArrayList;
 public class ViewUserDao {
 
     private ConnectionData connectionData;
-    public Books view(View view) throws SQLException{
+    public Books getAllBooksForUser(User user) throws SQLException{
         connectionData = new ConnectionData();
         try {
             Connection connection = DBConnector.getConnection(connectionData);
             String sql = "SELECT * FROM BOOKS b JOIN USER u on b.userid = u.userid and email=?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, view.getEmail());
+            pstmt.setString(1, user.getEmail());
             ResultSet res = pstmt.executeQuery();
 
             ArrayList<Book> userBookCollection = new ArrayList<Book>();
