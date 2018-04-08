@@ -19,7 +19,7 @@ public class ViewUserDao {
         connectionData = new ConnectionData();
         try {
             Connection connection = DBConnector.getConnection(connectionData);
-            String sql = "SELECT * FROM BOOKS WHERE userid = (SELECT userid from USER WHERE email=?)";
+            String sql = "SELECT * FROM BOOKS b JOIN USER u on b.userid = u.userid and email=?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, view.getEmail());
             //pstmt.executeUpdate();
