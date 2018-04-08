@@ -35,5 +35,15 @@ public class LoginUserDaoTest {
         assertTrue(result == true);
     }
 
+    @Test
+    public void loginInvalidCredentials() {
+        Login login = new Login();
+        login.setEmail("robertdowney@gmail.com");
+        login.setPassword("123");
+        LoginUserDao loginUserDao = new LoginUserDao();
+        boolean result = loginUserDao.login(login);
+        assertTrue(result == false);
+    }
+
 
 }

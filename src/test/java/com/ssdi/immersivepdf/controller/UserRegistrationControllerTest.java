@@ -50,8 +50,6 @@ public class UserRegistrationControllerTest {
 
     @Test
     public void registerUser_UsingMock() {
-       // User user = new Us
-        UserRegistrationController controller = new UserRegistrationController();
         User user = new User();
         user.setFirstname("Johny");
         user.setLastname("Depp");
