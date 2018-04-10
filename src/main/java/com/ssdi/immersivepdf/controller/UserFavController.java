@@ -19,7 +19,12 @@ public class UserFavController {
         int result = favUserDao.markfav(book);
         response.setStatusCode(result);
         if (result == 200) {
-            response.setStatusMessage("Book marked as favorite");
+            if (book.getIsfavorite()){
+                response.setStatusMessage("Book marked as favorite");
+            }
+            else{
+                response.setStatusMessage("Book unmarked from favorite list");
+            }
         }
         else {
             response.setStatusMessage("Failed to mark book as favorite");
