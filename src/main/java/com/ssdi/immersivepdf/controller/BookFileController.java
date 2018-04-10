@@ -22,16 +22,17 @@ public class BookFileController {
 //    BookFileController(BookEntryDao bookEntryDao) {this.bookEntryDao = bookEntryDao;}
 
     @PostMapping("/uploadFile")
+    @CrossOrigin(origins = "http://localhost:3000")
     public Response uploadFile(@RequestPart(value = "file") MultipartFile file, String fileName, String description, int userID) {
 
         Response response = new Response();
         //Attempt File Uploading
         FileEntity fileUploadStatusObject = this.amazonClient.uploadFile(file);
 
-        if (fileUploadStatusObject.statusCode == 200){
+        if (fileUploadStatusObject.getStatusCode() == 200){
             //store the filePath in books table
             BookEntryDao bookEntryDao = new BookEntryDao();
-            int fileUpdateDaoStatus = bookEntryDao.enterNewBook(fileName,fileUploadStatusObject.filePath,description,userID);
+            int fileUpdateDaoStatus = bookEntryDao.enterNewBook(fileName,fileUploadStatusObject.getFilePath(),description,userID);
             if (fileUpdateDaoStatus == 200){
                 response.setStatusCode(200);
                 response.setStatusMessage("File successfully uploaded");

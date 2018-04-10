@@ -2,12 +2,15 @@ package com.ssdi.immersivepdf.service;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.DeleteObjectsResult;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssdi.immersivepdf.model.fileUpload.FileEntity;
 import org.slf4j.Logger;
@@ -28,18 +31,19 @@ public class AmazonClient {
     private Logger logger = LoggerFactory.getLogger(AmazonClient.class);
 
     @Value("${amazonProperties.endpointUrl}")
-    private String endpointUrl;
+    private String endpointUrl= "https://s3.us-east-2.amazonaws.com";
     @Value("${amazonProperties.bucketName}")
-    private String bucketName;
+    private String bucketName = "ssd-immersivepdf-production-storage";
     @Value("${amazonProperties.accessKey}")
-    private String accessKey;
+    private String accessKey = "AKIAJ37CXUT5TRJQ2XXQ";
     @Value("${amazonProperties.secretKey}")
-    private String secretKey;
+    private String secretKey ="UwnfYko01CzyVH4FHO6Rqk2thIlDdziOFMWeOhqn";
+
 
     //Deprecated method will be replaced by S3Config constructor
     @PostConstruct
-    private void initializeAmazon() {
-        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
+    public void initializeAmazon() {
+        AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
         this.s3client = new AmazonS3Client(credentials);
     }
 
@@ -53,7 +57,7 @@ public class AmazonClient {
 
     public FileEntity uploadFile(MultipartFile multipartFile) {
         FileEntity fileEntity = new FileEntity();
-        fileEntity.filePath = "";
+        fileEntity.setFilePath("");
         try {
             File file = convertMultiPartToFile(multipartFile);
             String fileName = generateFileName(multipartFile);
@@ -69,29 +73,37 @@ public class AmazonClient {
                 logger.info("AWS Error Code:   " + ase.getErrorCode());
                 logger.info("Error Type:       " + ase.getErrorType());
                 logger.info("Request ID:       " + ase.getRequestId());
-                fileEntity.statusCode = 304;
-                fileEntity.uploadStatus = "Service failure.\n"+ ase.getMessage() +" \nPlease try again later.";
+                fileEntity.setStatusCode(304);
+                fileEntity.setUploadStatus( "Service failure.\n"+ ase.getMessage() +" \nPlease try again later.");
             } catch (AmazonClientException ace) {
                 logger.info("Caught an AmazonClientException: ");
                 logger.info("Error Message: " + ace.getMessage());
-                fileEntity.statusCode = 305;
-                fileEntity.uploadStatus = "Client error.\n"+ ace.getMessage() +" \nPlease try again later.";
+                fileEntity.setStatusCode(305);
+                fileEntity.setUploadStatus("Client error.\n"+ ace.getMessage() +" \nPlease try again later.");
             }
-            fileEntity.filePath = endpointUrl + "/" + bucketName + "/" + fileName;
-            fileEntity.statusCode = 200;
-            fileEntity.uploadStatus = "Upload Successfull";
+            fileEntity.setFilePath(endpointUrl + "/" + bucketName + "/" + fileName);
+            fileEntity.setStatusCode(200);
+            fileEntity.setUploadStatus("Upload Successfull");
             file.delete();
         } catch (Exception e) {
             e.printStackTrace();
-            fileEntity.statusCode = 402;
-            fileEntity.uploadStatus = "Unknown Exception occurred. Seems to be problem with File Conversion. \nError Message: "+ e.getMessage() +" \nPlease contact the admin team to resolve the issue.";
+            fileEntity.setStatusCode(402);
+            fileEntity.setUploadStatus("Unknown Exception occurred. Seems to be problem with File Conversion. \nError Message: "+ e.getMessage() +" \nPlease contact the admin team to resolve the issue.");
         }
         return fileEntity;
     }
 
     public String deleteFileFromS3Bucket(String fileUrl) {
         String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-        s3client.deleteObject(new DeleteObjectRequest(bucketName + "/", fileName));
+        try {
+            s3client.deleteObject(new DeleteObjectRequest(bucketName + "/", fileName));
+        }catch (AmazonServiceException e){
+            System.out.println(e.getMessage());
+        }catch (SdkClientException e){
+            System.out.println(e.getLocalizedMessage());
+        }catch (Exception e){
+            System.out.println(e.getLocalizedMessage());
+        }
         return "Successfully deleted";
     }
 

@@ -5,6 +5,8 @@ package com.ssdi.immersivepdf.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssdi.immersivepdf.dao.RegisterUserDao;
 import com.ssdi.immersivepdf.model.Register.User;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,14 +38,12 @@ public class UserRegistrationControllerTest {
     @Mock
     private RegisterUserDao daoMock;
     private MockMvc mockMvc;
-    private ObjectMapper obj_mapper;
 
     @InjectMocks
     private UserRegistrationController userRegistrationController;
 
     @Before
-    public void setUp() throws Exception{
-        obj_mapper = new ObjectMapper();
+    public void setUp(){
         mockMvc = MockMvcBuilders.standaloneSetup(userRegistrationController).build
                 ();
     }
@@ -66,23 +66,25 @@ public class UserRegistrationControllerTest {
     @Test
     public void testResigtrationMapping(){
 
-        User user = mock(User.class);
+        JSONObject request = new JSONObject();
 
-//        try{
-//            mockMvc.perform(post("/register")
-//                    .contentType(MediaType.APPLICATION_JSON)
-//                    .andExpect(status().isOk());
-//            )
-//        }
+        try {
+            request.put("firstname","Narendra");
+            request.put("lastname","Modi");
+            request.put("email","narendra@gmail.com");
+            request.put("role","User");
+            request.put("password","User");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try{
+            mockMvc.perform(post("/register")
+                    .contentType(MediaType.APPLICATION_JSON).content(request.toString()))
+                    .andExpect(status().isOk());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
-//    @Test
-//    public void testRequestMapping(){
-//        User user = mock(User.class);
-//        session.setAttribute("sessionParm",user);
-//        this.mockMvc.perform(get("/register").session(session)
-//                .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("test"));
-//    }
+
 
 }

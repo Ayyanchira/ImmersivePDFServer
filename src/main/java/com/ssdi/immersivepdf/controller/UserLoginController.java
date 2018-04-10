@@ -3,10 +3,7 @@ import com.ssdi.immersivepdf.dao.LoginUserDao;
 import com.ssdi.immersivepdf.model.Login.Login;
 import com.ssdi.immersivepdf.model.generic.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserLoginController {
@@ -15,6 +12,7 @@ public class UserLoginController {
     private LoginUserDao loginUserDao;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:3000")
     public Response loginUser(@RequestBody Login request) {
 
         Response response = new Response();
