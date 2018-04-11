@@ -3,11 +3,14 @@ package com.ssdi.immersivepdf.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssdi.immersivepdf.dao.FavUserDao;
 import com.ssdi.immersivepdf.model.View.Book;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,6 +20,8 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -52,10 +57,23 @@ public class UserFavControllerTest {
     }
 
     @Test
-    public void testFavMapping(){
+    public void testMarkFavMapping(){
 
-        //User user = mock(User.class);
+        JSONObject request = new JSONObject();
+
+        try {
+            request.put("bookid",1);
+            request.put("isfavorite",true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try{
+            mockMvc.perform(post("/markfav")
+                    .contentType(MediaType.APPLICATION_JSON).content(request.toString()))
+                    .andExpect(status().isOk());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
-
 
 }
