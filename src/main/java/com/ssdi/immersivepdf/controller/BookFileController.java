@@ -23,7 +23,7 @@ public class BookFileController {
 
     @PostMapping("/uploadFile")
     @CrossOrigin(origins = "http://localhost:3000")
-    public Response uploadFile(@RequestPart(value = "file") MultipartFile file, String fileName, String description, int userID) {
+    public Response uploadFile(@RequestPart(value = "file") MultipartFile file, String fileName, String description, String email) {
 
         Response response = new Response();
         //Attempt File Uploading
@@ -32,7 +32,7 @@ public class BookFileController {
         if (fileUploadStatusObject.getStatusCode() == 200){
             //store the filePath in books table
             BookEntryDao bookEntryDao = new BookEntryDao();
-            int fileUpdateDaoStatus = bookEntryDao.enterNewBook(fileName,fileUploadStatusObject.getFilePath(),description,userID);
+            int fileUpdateDaoStatus = bookEntryDao.enterNewBook(fileName,fileUploadStatusObject.getFilePath(),description, email);
             if (fileUpdateDaoStatus == 200){
                 response.setStatusCode(200);
                 response.setStatusMessage("File successfully uploaded");

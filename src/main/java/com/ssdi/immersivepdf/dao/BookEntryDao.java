@@ -13,16 +13,16 @@ import java.sql.SQLException;
 public class BookEntryDao {
     private ConnectionData connectionData;
 
-    public int enterNewBook(String fileName, String filePath, String description,int userID){
+    public int enterNewBook(String fileName, String filePath, String description, String email){
         connectionData = new ConnectionData();
         try {
             Connection connection = DBConnector.getConnection(connectionData);
-            String sql = "INSERT INTO BOOKS(bookname,description,userid,location) VALUES(?,?,?,?)";
+            String sql = "INSERT INTO BOOKS(bookname,description,userid,location) VALUES(?,?,userid,?) SELECT userid FROM USER WHERE email=?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, fileName);
             pstmt.setString(2, description);
-            pstmt.setInt(3, userID);
-            pstmt.setString(4, filePath);
+            pstmt.setString(3, filePath);
+            pstmt.setString(4, email);
             pstmt.executeUpdate();
             return 200;
             /* connection.close(); */
