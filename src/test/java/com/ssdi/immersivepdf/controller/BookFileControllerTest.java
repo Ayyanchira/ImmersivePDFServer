@@ -76,7 +76,7 @@ public class BookFileControllerTest {
         MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
         Response result =  new Response();
         result.setStatusCode(200);
-        when(bookFileController.uploadFile(file,"Hello","description","user1@gmail.com")).thenReturn(result);
+        when(bookFileController.uploadFile(file,"Hello","description","robertdowney@gmail.com")).thenReturn(result);
 
         try {
             mockMvc.perform(post("/storage/uploadFile")
