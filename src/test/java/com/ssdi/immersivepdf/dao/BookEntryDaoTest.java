@@ -17,7 +17,6 @@ public class BookEntryDaoTest {
 
     Connection connection;
     TestConnectionData connectionData;
-    int userid = 0;
 
     @Before
     public void setUp() throws Exception {
@@ -45,14 +44,6 @@ public class BookEntryDaoTest {
             PreparedStatement pstmt2 = connection.prepareStatement(sql);
             pstmt2.executeUpdate();
 
-            sql = "SELECT userid from USER WHERE email='robertdowney@gmail.com'";
-            pstmt = connection.prepareStatement(sql);
-            ResultSet res = pstmt.executeQuery();
-
-            if (res.first()){
-                userid = res.getInt("userid");
-            }
-
         }catch (SQLException sqlError) {
             System.out.println(sqlError.getMessage());
         }
@@ -66,6 +57,6 @@ public class BookEntryDaoTest {
     @Test
     public void enterNewBook() {
         BookEntryDao bookEntryDao = new BookEntryDao();
-        bookEntryDao.enterNewBook("Hello","C:Path","TestDescription",userid);
+        bookEntryDao.enterNewBook("Hello","C:Path","TestDescription","robertdowney@gmail.com");
     }
 }
