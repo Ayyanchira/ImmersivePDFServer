@@ -47,4 +47,26 @@ public class UserDataDao {
         }
     }
 
+    public boolean deleteUser(User user){
+        connectionData = new ConnectionData();
+        try {
+            Connection connection = DBConnector.getConnection(connectionData);
+            String sql = "DELETE FROM USER WHERE email = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, user.getEmail());
+            long res = pstmt.executeUpdate();
+
+            System.out.println("Response of delete sql statement " + res);
+            if (res == 1){
+                return true;
+            }else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

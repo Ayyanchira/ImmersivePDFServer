@@ -54,4 +54,18 @@ public class AdminViewController {
         }
         return response;
     }
+
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Response deleteUser(@RequestBody User user){
+        Response response = new Response();
+        if (userDataDao.deleteUser(user)) {
+            response.setStatusMessage("User Successfully Deleted.");
+            response.setStatusCode(200);
+        }else {
+            response.setStatusMessage("Failed. User data doesn't exist.");
+            response.setStatusCode(400);
+        }
+        return response;
+    }
 }
