@@ -16,7 +16,7 @@ public class AdminViewController {
     private GetBooksDao getbooksDao;
     private UserDataDao userDataDao;
 
-    @RequestMapping(value = "/view", method = RequestMethod.POST)
+    @RequestMapping(value = "/getUsers", method = RequestMethod.POST)
     @CrossOrigin(origins = "http://localhost:3000")
     public Response getAllUsers(@RequestBody User user){
 
