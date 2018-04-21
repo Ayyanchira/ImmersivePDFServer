@@ -69,4 +69,27 @@ public class UserDataDao {
         }
     }
 
+    public boolean allowPasswordReset(User user){
+        connectionData = new ConnectionData();
+        try {
+            Connection connection = DBConnector.getConnection(connectionData);
+            String sql = "UPDATE USER SET isAllowedToResetPwd=? WHERE email = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setBoolean(1, user.isAllowedToResetPassword());
+            pstmt.setString(2, user.getEmail());
+            long res = pstmt.executeUpdate();
+
+            System.out.println("Response of delete sql statement " + res);
+            if (res == 1){
+                return true;
+            }else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

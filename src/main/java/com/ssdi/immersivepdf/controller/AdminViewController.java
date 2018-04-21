@@ -68,4 +68,18 @@ public class AdminViewController {
         }
         return response;
     }
+
+    @RequestMapping(value = "/grantPrivilege", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Response grantPrivilege(@RequestBody User user){
+        Response response = new Response();
+        if (userDataDao.allowPasswordReset(user)) {
+            response.setStatusMessage("Successfully updated the privilege");
+            response.setStatusCode(200);
+        }else {
+            response.setStatusMessage("Failed to update");
+            response.setStatusCode(400);
+        }
+        return response;
+    }
 }
