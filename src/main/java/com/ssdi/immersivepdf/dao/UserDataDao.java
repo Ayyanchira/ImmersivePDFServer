@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class UserDataDao {
 
     private ConnectionData connectionData;
-    public Users getAllBooksForUser() throws SQLException {
+    public Users getAllUsers() throws SQLException {
         connectionData = new ConnectionData();
         try {
             Connection connection = DBConnector.getConnection(connectionData);
@@ -29,13 +29,13 @@ public class UserDataDao {
 
             ArrayList<User> userCollection = new ArrayList<>();
             while (res.next()){
-                User book = new User();
-                book.setEmail(res.getString("email"));
-                book.setFirstname(res.getString("firstname"));
-                book.setLastname(res.getString("lastname"));
-                book.setRole("User");
-                book.setAllowedToResetPassword(res.getBoolean("isAllowedToResetPwd"));
-
+                User user = new User();
+                user.setEmail(res.getString("email"));
+                user.setFirstname(res.getString("firstname"));
+                user.setLastname(res.getString("lastname"));
+                user.setRole("User");
+                user.setAllowedToResetPassword(res.getBoolean("isAllowedToResetPwd"));
+                userCollection.add(user);
             }
             Users allusers = new Users();
             allusers.setUsers(userCollection);

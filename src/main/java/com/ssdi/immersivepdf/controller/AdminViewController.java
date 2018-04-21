@@ -5,6 +5,7 @@ import com.ssdi.immersivepdf.dao.UserDataDao;
 import com.ssdi.immersivepdf.model.Register.User;
 import com.ssdi.immersivepdf.model.admin.Users;
 import com.ssdi.immersivepdf.model.generic.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -13,8 +14,11 @@ import java.sql.SQLException;
 @RequestMapping("/admin/")
 public class AdminViewController {
 
-    private GetBooksDao getbooksDao;
+    @Autowired
     private UserDataDao userDataDao;
+    @Autowired
+    private GetBooksDao getbooksDao;
+
 
     @RequestMapping(value = "/getUsers", method = RequestMethod.POST)
     @CrossOrigin(origins = "http://localhost:3000")
@@ -22,7 +26,7 @@ public class AdminViewController {
 
         Response response = new Response();
         try{
-            Users users = userDataDao.getAllBooksForUser();
+            Users users = userDataDao.getAllUsers();
             response.setData(users);
             response.setStatusMessage("Successful");
             response.setStatusCode(200);
