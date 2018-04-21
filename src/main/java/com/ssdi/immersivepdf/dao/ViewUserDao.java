@@ -34,8 +34,8 @@ public class ViewUserDao {
                 book.setDescription(res.getString("description"));
                 book.setUserid(res.getInt("userid"));
                 book.setLocation(res.getString("location"));
-                book.setBookmark(res.getInt("bookmark"));
                 book.setIsfavorite(res.getBoolean("isfavorite"));
+                book.setBookmark(res.getInt("bookmark"));
                 userBookCollection.add(book);
             }
             Books allBooks = new Books();
