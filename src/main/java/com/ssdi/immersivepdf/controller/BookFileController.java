@@ -40,7 +40,6 @@ public class BookFileController {
                 response.setStatusCode(303);
                 response.setStatusMessage("File upload Failed.");
                 System.out.println("File uploaded to Amazon S3 bucket. But Failed to update database.");
-                //TO DO : Delete file from S3 bucket
             }
         }else{
             response.setStatusCode(303);
