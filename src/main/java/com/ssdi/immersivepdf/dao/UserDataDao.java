@@ -75,7 +75,7 @@ public class UserDataDao {
             Connection connection = DBConnector.getConnection(connectionData);
             String sql = "UPDATE USER SET isAllowedToResetPwd=? WHERE email = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setBoolean(1, user.isAllowedToResetPassword());
+            pstmt.setBoolean(1, user.getAllowedToResetPassword());
             pstmt.setString(2, user.getEmail());
             long res = pstmt.executeUpdate();
 

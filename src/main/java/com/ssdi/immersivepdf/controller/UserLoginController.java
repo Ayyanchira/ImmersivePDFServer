@@ -1,9 +1,12 @@
 package com.ssdi.immersivepdf.controller;
 import com.ssdi.immersivepdf.dao.LoginUserDao;
 import com.ssdi.immersivepdf.model.Login.Login;
+import com.ssdi.immersivepdf.model.Register.User;
 import com.ssdi.immersivepdf.model.generic.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
 
 @RestController
 public class UserLoginController {
@@ -16,13 +19,23 @@ public class UserLoginController {
     public Response loginUser(@RequestBody Login request) {
 
         Response response = new Response();
-        if (loginUserDao.login(request)) {
-            response.setStatusMessage("User Login Sucessful");
+        User userObject = new User();
+        try{
+            userObject = loginUserDao.userLogin(request);
             response.setStatusCode(200);
-        } else {
+            response.setStatusMessage("User Login Sucessful");
+            response.setData(userObject);
+        }catch (SQLException e){
             response.setStatusMessage("Failed to login");
             response.setStatusCode(400);
         }
+//        if (loginUserDao.login(request)) {
+//            response.setStatusMessage("User Login Sucessful");
+//            response.setStatusCode(200);
+//        } else {
+//            response.setStatusMessage("Failed to login");
+//            response.setStatusCode(400);
+//        }
         return response;
     }
 }
