@@ -6,6 +6,7 @@ public class User {
     private String email;
     private String role = "User";
     private String password;
+    private boolean isAllowedToResetPassword;
 
     //NOTICE : This kind of initializer is not required for model classes and infact caused problem. Creating another blank constructor solved the problem and was able to map the json request to model classes. This construsuctor will be deleted in future commits
     public User(String firstname, String lastname, String email, String password) {
@@ -58,4 +59,8 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public boolean isAllowedToResetPassword() { return isAllowedToResetPassword; }
+
+    public void setAllowedToResetPassword(boolean allowedToResetPassword) { isAllowedToResetPassword = allowedToResetPassword; }
 }
