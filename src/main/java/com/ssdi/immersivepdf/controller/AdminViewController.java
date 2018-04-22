@@ -3,6 +3,7 @@ package com.ssdi.immersivepdf.controller;
 import com.ssdi.immersivepdf.dao.GetBooksDao;
 import com.ssdi.immersivepdf.dao.UserDataDao;
 import com.ssdi.immersivepdf.model.Register.User;
+import com.ssdi.immersivepdf.model.View.Book;
 import com.ssdi.immersivepdf.model.View.Books;
 import com.ssdi.immersivepdf.model.admin.Users;
 import com.ssdi.immersivepdf.model.generic.Response;
@@ -64,6 +65,20 @@ public class AdminViewController {
             response.setStatusCode(200);
         }else {
             response.setStatusMessage("Failed. User data doesn't exist.");
+            response.setStatusCode(400);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/deleteBooks", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Response deleteUser(@RequestBody Book book){
+        Response response = new Response();
+        if (getbooksDao.deleteBook(book)) {
+            response.setStatusMessage("Book Successfully Deleted.");
+            response.setStatusCode(200);
+        }else {
+            response.setStatusMessage("Failed. Book data doesn't exist.");
             response.setStatusCode(400);
         }
         return response;
