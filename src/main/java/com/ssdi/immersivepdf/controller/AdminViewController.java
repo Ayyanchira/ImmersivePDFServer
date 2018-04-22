@@ -1,8 +1,10 @@
 package com.ssdi.immersivepdf.controller;
 
+import com.ssdi.immersivepdf.dao.BookEntryDao;
 import com.ssdi.immersivepdf.dao.GetBooksDao;
 import com.ssdi.immersivepdf.dao.UserDataDao;
 import com.ssdi.immersivepdf.model.Register.User;
+import com.ssdi.immersivepdf.model.View.Book;
 import com.ssdi.immersivepdf.model.View.Books;
 import com.ssdi.immersivepdf.model.admin.Users;
 import com.ssdi.immersivepdf.model.generic.Response;
@@ -19,6 +21,8 @@ public class AdminViewController {
     private UserDataDao userDataDao;
     @Autowired
     private GetBooksDao getbooksDao;
+    @Autowired
+    private BookEntryDao bookEntryDao;
 
 
     @RequestMapping(value = "/getUsers", method = RequestMethod.POST)
@@ -79,6 +83,22 @@ public class AdminViewController {
         }else {
             response.setStatusMessage("Failed to update");
             response.setStatusCode(400);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/deleteBook", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Response deleteBook(@RequestBody Book book){
+        Response response = new Response();
+        int result = bookEntryDao.deleteBook(book);
+        response.setStatusCode(result);
+        if (result == 200){
+            response.setStatusMessage("Entry successfully deleted.");
+        }else if(result == 400){
+            response.setStatusMessage("Book does not exist.");
+        }else {
+            response.setStatusMessage("Error occurred while deleting the book entry");
         }
         return response;
     }

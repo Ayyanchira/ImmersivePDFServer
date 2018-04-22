@@ -47,4 +47,27 @@ public class BookEntryDao {
            return 401;
         }
     }
+
+    public int deleteBook(Book book){
+        connectionData = new ConnectionData();
+        try {
+            PreparedStatement pstmt;
+            Connection connection = DBConnector.getConnection(connectionData);
+            String sql = "DELETE from BOOKS WHERE bookid = ?";
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1,book.getBookid());
+            int res = pstmt.executeUpdate();
+            if (res == 1) {
+                return 200;
+            }else{
+                return 400;
+            }
+            /* connection.close(); */
+
+        } catch (SQLException sqlError) {
+            System.out.println(sqlError.getMessage());
+            return 401;
+        }
+    }
+
 }
