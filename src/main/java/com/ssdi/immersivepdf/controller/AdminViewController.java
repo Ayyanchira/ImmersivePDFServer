@@ -73,20 +73,6 @@ public class AdminViewController {
         return response;
     }
 
-    @RequestMapping(value = "/deleteBooks", method = RequestMethod.POST)
-    @CrossOrigin(origins = "http://localhost:3000")
-    public Response deleteUser(@RequestBody Book book){
-        Response response = new Response();
-        if (getbooksDao.deleteBook(book)) {
-            response.setStatusMessage("Book Successfully Deleted.");
-            response.setStatusCode(200);
-        }else {
-            response.setStatusMessage("Failed. Book data doesn't exist.");
-            response.setStatusCode(400);
-        }
-        return response;
-    }
-
     @RequestMapping(value = "/grantPrivilege", method = RequestMethod.POST)
     @CrossOrigin(origins = "http://localhost:3000")
     public Response grantPrivilege(@RequestBody User user){

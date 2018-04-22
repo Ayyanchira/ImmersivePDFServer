@@ -49,27 +49,4 @@ public class GetBooksDao {
             throw e;
         }
     }
-
-    public boolean deleteBook(Book book){
-        connectionData = new ConnectionData();
-        try {
-            Connection connection = DBConnector.getConnection(connectionData);
-            String sql = "DELETE FROM BOOKS WHERE bookid = ?";
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, book.getBookid());
-            long res = pstmt.executeUpdate();
-
-            System.out.println("Response of delete sql statement " + res);
-            if (res == 1){
-                return true;
-            }else {
-                return false;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
 }
