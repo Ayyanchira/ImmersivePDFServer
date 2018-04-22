@@ -48,18 +48,19 @@ public class LoginUserDao {
             pstmt.setString(1, login.getEmail());
             ResultSet res = pstmt.executeQuery();
             User user = new User();
-            if (res.first()){
-                while (res.next()){
-                    user.setEmail(res.getString("email"));
-                    user.setFirstname(res.getString("firstname"));
-                    user.setLastname(res.getString("lastname"));
-                    user.setRole(res.getString("role"));
-                    user.setAllowedToResetPassword(res.getBoolean("isAllowedToResetPwd"));
-                }
-                return user;
-            }else {
+            boolean userExists = false;
+            while (res.next()) {
+                userExists = true;
+                user.setEmail(res.getString("email"));
+                user.setFirstname(res.getString("firstname"));
+                user.setLastname(res.getString("lastname"));
+                user.setRole(res.getString("role"));
+                user.setAllowedToResetPassword(res.getBoolean("isAllowedToResetPwd"));
+            }
+            if (!userExists){
                 throw new SQLException();
             }
+            return user;
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;
