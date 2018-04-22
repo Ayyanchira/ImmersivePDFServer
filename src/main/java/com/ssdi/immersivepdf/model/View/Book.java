@@ -8,6 +8,15 @@ public class Book {
     String location;
     int bookmark;
     Boolean isfavorite;
+    String ownerName;
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
 
     public Boolean getIsfavorite() {
         return isfavorite;

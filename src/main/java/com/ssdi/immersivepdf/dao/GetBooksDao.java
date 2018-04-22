@@ -21,7 +21,7 @@ public class GetBooksDao {
         connectionData = new ConnectionData();
         try {
             Connection connection = DBConnector.getConnection(connectionData);
-            String sql = "SELECT * FROM BOOKS";
+            String sql = "SELECT * FROM BOOKS b join USER  u on b.userid = u.userid";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             ResultSet res = pstmt.executeQuery();
 
@@ -35,6 +35,9 @@ public class GetBooksDao {
                 book.setLocation(res.getString("location"));
                 book.setIsfavorite(res.getBoolean("isfavorite"));
                 book.setBookmark(res.getInt("bookmark"));
+                String firstName = res.getString("firstname");
+                String lastname = res.getString("lastname");
+                book.setOwnerName(firstName + " " + lastname);
                 userBookCollection.add(book);
             }
             Books allBooks = new Books();
