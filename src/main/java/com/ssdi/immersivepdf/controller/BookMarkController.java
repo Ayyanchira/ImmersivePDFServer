@@ -13,7 +13,7 @@ public class BookMarkController {
     private BookMarkDao bookMarkDao;
 
     @RequestMapping(value = "/bookmark", method = RequestMethod.POST)
-    //@CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000")
     public Response markUser(@RequestBody Book book) {
 
         Response response = new Response();
