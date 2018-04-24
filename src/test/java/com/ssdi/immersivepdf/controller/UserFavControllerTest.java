@@ -40,8 +40,7 @@ public class UserFavControllerTest {
     @Before
     public void setUp() throws Exception{
         obj_mapper = new ObjectMapper();
-        mockMvc = MockMvcBuilders.standaloneSetup(userFavController).build
-                ();
+        mockMvc = MockMvcBuilders.standaloneSetup(userFavController).build();
     }
 
     @Test
