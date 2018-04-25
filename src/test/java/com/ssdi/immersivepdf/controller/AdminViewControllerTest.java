@@ -118,8 +118,6 @@ public class AdminViewControllerTest {
 
     @Test
     public void getAllBooksUsingMock() {
-        Users users = new Users();
-        User user = new User("Robert","Downey","robert@gmail.com","password",true);
 
         Book book = new Book();
         ArrayList<Book> booksarray = new ArrayList<>();
@@ -128,8 +126,8 @@ public class AdminViewControllerTest {
         booksCollection.setBookCollection(booksarray);
 
         try{
-            when(getBooksDao.getAllBooksForUser(user)).thenReturn(booksCollection);
-            Books resultantBooks = getBooksDao.getAllBooksForUser(user);
+            when(getBooksDao.getAllBooks()).thenReturn(booksCollection);
+            Books resultantBooks = getBooksDao.getAllBooks();
             assertTrue(resultantBooks.getBookCollection().size() == 1);
         }catch (Exception e){
             assertFalse(true);

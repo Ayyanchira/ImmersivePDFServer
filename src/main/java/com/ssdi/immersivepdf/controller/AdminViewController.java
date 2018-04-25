@@ -48,7 +48,7 @@ public class AdminViewController {
 
         Response response = new Response();
         try {
-            Books userBookCollection = getbooksDao.getAllBooksForUser(request);
+            Books userBookCollection = getbooksDao.getAllBooks();
             response.setData(userBookCollection);
             response.setStatusMessage("Successful");
             response.setStatusCode(200);

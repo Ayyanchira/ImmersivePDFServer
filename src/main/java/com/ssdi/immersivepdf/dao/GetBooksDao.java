@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class GetBooksDao {
 
     private ConnectionData connectionData;
-    public Books getAllBooksForUser(User user) throws SQLException {
+    public Books getAllBooks() throws SQLException {
         connectionData = new ConnectionData();
         try {
             Connection connection = DBConnector.getConnection(connectionData);

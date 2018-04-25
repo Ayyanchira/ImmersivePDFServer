@@ -1,5 +1,6 @@
 package com.ssdi.immersivepdf.dao;
 
+import com.ssdi.immersivepdf.model.View.Book;
 import com.ssdi.immersivepdf.util.DBConnector;
 import com.ssdi.immersivepdf.util.TestConnectionData;
 import org.junit.After;
@@ -57,6 +58,45 @@ public class BookEntryDaoTest {
     @Test
     public void enterNewBook() {
         BookEntryDao bookEntryDao = new BookEntryDao();
-        bookEntryDao.enterNewBook("Hello","C:Path","TestDescription","robertdowney@gmail.com");
+        bookEntryDao.enterNewBook("TestingBookDelete","C:Path","TestDescription","robertdowney@gmail.com");
+    }
+
+    @Test
+    public void deleteBookTestMethod(){
+        enterNewBook();
+        //Fetch user's id
+        String sql;
+        PreparedStatement pstmt;
+        try {
+            sql = "SELECT bookid from BOOKS WHERE bookname = 'TestingBookDelete'";
+            pstmt = connection.prepareStatement(sql);
+            ResultSet res = pstmt.executeQuery();
+            int bookid = 0;
+
+            if (res.first()) {
+                bookid = res.getInt("bookid");
+            }
+
+            Book bookToDelete =  new Book();
+            bookToDelete.setBookid(bookid);
+            BookEntryDao bookEntryDao = new BookEntryDao();
+            int result = bookEntryDao.deleteBook(bookToDelete);
+            System.out.println("Result of delete book operation : " + result);
+            assertTrue(result == 200);
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+            assertTrue(false);
+        }
+    }
+
+    @Test
+    public void deleteNonExistingBookTestMethod(){
+        Book bookToDelete =  new Book();
+        bookToDelete.setBookid(1000);
+        BookEntryDao bookEntryDao = new BookEntryDao();
+        int result = bookEntryDao.deleteBook(bookToDelete);
+        System.out.println("Result of delete book operation : " + result);
+        assertTrue(result == 400);
     }
 }
