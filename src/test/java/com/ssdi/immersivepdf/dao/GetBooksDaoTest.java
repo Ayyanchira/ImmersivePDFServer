@@ -20,6 +20,7 @@ public class GetBooksDaoTest {
     TestConnectionData connectionData;
     int bookCount;
 
+
     @Before
     public void setUp() throws Exception {
         connectionData = new TestConnectionData();
@@ -27,6 +28,7 @@ public class GetBooksDaoTest {
 
         String sql;
         PreparedStatement pstmt;
+        bookCount = 0;
         try {
             connection = DBConnector.getConnection(connectionData);
 
@@ -37,11 +39,6 @@ public class GetBooksDaoTest {
             while (resultset.next()){
                 bookCount++;
             }
-
-            //Inserting new user
-            sql= "INSERT INTO USER(firstname,lastname,email,role,password) VALUES('Robert','Downey','robertdowney@gmail.com','User','password')";
-            PreparedStatement pstmt2 = connection.prepareStatement(sql);
-            pstmt2.executeUpdate();
 
         }catch (SQLException sqlError) {
             System.out.println(sqlError.getMessage());
