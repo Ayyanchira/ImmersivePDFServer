@@ -93,4 +93,48 @@ public class UserLoginControllerTest {
         }
 
     }
+
+    @Test
+    public void checkResetPasswordControllerRequestMapping(){
+
+        JSONObject request = new JSONObject();
+
+        try {
+            request.put("password","newpassword");
+            request.put("email","akshay@gmail.com");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            mockMvc.perform(post("/resetpassword")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(request.toString())).andExpect(status().isOk());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void resetPasswordValidWithMock() {
+        Login loginRequest = new Login();
+        loginRequest.setEmail("brucewayne@gmail.com");
+        loginRequest.setPassword("batman");
+        User user =  new User();
+        user.setEmail("robert@gmail.com");
+        when(loginUserDao.resetPassword(loginRequest)).thenReturn(true);
+        assertTrue(loginUserDao.resetPassword(loginRequest) == true);
+    }
+
+    @Test
+    public void resetPasswordInvalidWithMock() {
+        Login loginRequest = new Login();
+        loginRequest.setEmail("brucewayne@gmail.com");
+        loginRequest.setPassword("batman");
+        User user =  new User();
+        user.setEmail("robert@gmail.com");
+        when(loginUserDao.resetPassword(loginRequest)).thenReturn(false);
+        assertTrue(loginUserDao.resetPassword(loginRequest) == false);
+    }
+
 }

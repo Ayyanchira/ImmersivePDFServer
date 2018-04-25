@@ -57,22 +57,19 @@ public class UserLoginController {
         return response;
     }
 
-//    @RequestMapping(value = "/resetpassword", method = RequestMethod.POST)
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    public Response validateUser(@RequestBody User userRequest) {
-//
-//        Response response = new Response();
-//        User userObject = new User();
-//        try{
-//            userObject = loginUserDao.isValidUser(request);
-//            response.setStatusCode(200);
-//            response.setStatusMessage("User is valid");
-//            response.setData(userObject);
-//        }catch (SQLException e){
-//            response.setStatusMessage("No such entry found.");
-//            response.setStatusCode(400);
-//        }
-//        return response;
-//    }
+    @RequestMapping(value = "/resetpassword", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Response userResetPassword(@RequestBody Login request) {
+
+        Response response = new Response();
+        if(loginUserDao.resetPassword(request)){
+            response.setStatusCode(200);
+            response.setStatusMessage("User is valid");
+        }else{
+            response.setStatusMessage("No such entry found.");
+            response.setStatusCode(400);
+        }
+        return response;
+    }
 
 }

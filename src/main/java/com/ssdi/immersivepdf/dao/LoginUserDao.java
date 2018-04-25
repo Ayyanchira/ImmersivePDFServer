@@ -2,7 +2,6 @@ package com.ssdi.immersivepdf.dao;
 
 import com.ssdi.immersivepdf.model.Login.Login;
 import com.ssdi.immersivepdf.model.Register.User;
-import com.ssdi.immersivepdf.model.admin.Users;
 import com.ssdi.immersivepdf.util.ConnectionData;
 import com.ssdi.immersivepdf.util.DBConnector;
 import org.springframework.stereotype.Service;
@@ -64,7 +63,7 @@ public class LoginUserDao {
                 user.setRole(res.getString("role"));
                 user.setAllowedToResetPassword(res.getBoolean("isAllowedToResetPwd"));
             }
-            if (!userExists){
+            if (!userExists) {
                 throw new SQLException();
             }
             return user;
@@ -74,31 +73,25 @@ public class LoginUserDao {
         }
     }
 
-//    public User resetPassword(User user) throws SQLException {
-//        connectionData = new ConnectionData();
-//        try {
-//            Connection connection = DBConnector.getConnection(connectionData);
-//            String sql = "SELECT * FROM USER WHERE email = ?";
-//            PreparedStatement pstmt = connection.prepareStatement(sql);
-//            pstmt.setString(1, login.getEmail());
-//            ResultSet res = pstmt.executeQuery();
-//            User user = new User();
-//            boolean userExists = false;
-//            while (res.next()) {
-//                userExists = true;
-//                user.setEmail(res.getString("email"));
-//                user.setFirstname(res.getString("firstname"));
-//                user.setLastname(res.getString("lastname"));
-//                user.setRole(res.getString("role"));
-//                user.setAllowedToResetPassword(res.getBoolean("isAllowedToResetPwd"));
-//            }
-//            if (!userExists){
-//                throw new SQLException();
-//            }
-//            return user;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            throw e;
-//        }
-
+    public boolean resetPassword(Login login) {
+        connectionData = new ConnectionData();
+        try {
+            Connection connection = DBConnector.getConnection(connectionData);
+            String sql = "UPDATE USER SET password = ? WHERE email = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1,login.getPassword());
+            pstmt.setString(2,login.getEmail());
+            int isPasswordUpdated = pstmt.executeUpdate();
+            System.out.println("Password update status from DAO is : "+isPasswordUpdated);
+            if (isPasswordUpdated != 0){
+                return true;
+            }else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

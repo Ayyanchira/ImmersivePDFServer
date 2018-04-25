@@ -113,7 +113,24 @@ public class LoginUserDaoTest {
         }
     }
 
+    @Test
+    public void validateResetPasswordTestMethod() {
+        Login login = new Login();
+        login.setEmail("robertdowney@gmail.com");
+        login.setPassword("newpassword");
+        LoginUserDao loginUserDao = new LoginUserDao();
+        boolean isPasswordUpdated = loginUserDao.resetPassword(login);
+        assertTrue(isPasswordUpdated);
+    }
 
-
+    @Test
+    public void resetPasswordWithInvalidCredential() {
+        Login login = new Login();
+        login.setEmail("roberasdtdowney@gmail.com");
+        login.setPassword("newpasswoasdrd");
+        LoginUserDao loginUserDao = new LoginUserDao();
+        boolean isPasswordUpdated = loginUserDao.resetPassword(login);
+        assertFalse(isPasswordUpdated);
+    }
 
 }
