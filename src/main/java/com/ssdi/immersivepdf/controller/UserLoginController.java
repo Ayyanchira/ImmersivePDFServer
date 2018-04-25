@@ -21,7 +21,7 @@ public class UserLoginController {
         Response response = new Response();
         User userObject = new User();
         try{
-            userObject = loginUserDao.userLogin(request);
+            userObject = loginUserDao.login(request);
             response.setStatusCode(200);
             response.setStatusMessage("User Login Sucessful");
             response.setData(userObject);
@@ -36,6 +36,24 @@ public class UserLoginController {
 //            response.setStatusMessage("Failed to login");
 //            response.setStatusCode(400);
 //        }
+        return response;
+    }
+
+    @RequestMapping(value = "/validate", method = RequestMethod.POST)
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Response validateUser(@RequestBody Login request) {
+
+        Response response = new Response();
+        User userObject = new User();
+        try{
+            userObject = loginUserDao.isValidUser(request);
+            response.setStatusCode(200);
+            response.setStatusMessage("User is valid");
+            response.setData(userObject);
+        }catch (SQLException e){
+            response.setStatusMessage("No such entry found.");
+            response.setStatusCode(400);
+        }
         return response;
     }
 }

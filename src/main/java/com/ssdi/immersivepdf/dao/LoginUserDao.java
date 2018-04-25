@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class LoginUserDao {
 
     private ConnectionData connectionData;
-    public boolean login(Login login){
+    public User login(Login login) throws SQLException{
         connectionData = new ConnectionData();
         try {
             Connection connection = DBConnector.getConnection(connectionData);
@@ -26,20 +26,27 @@ public class LoginUserDao {
             pstmt.setString(1, login.getEmail());
             pstmt.setString(2, login.getPassword());
             ResultSet res = pstmt.executeQuery();
-            if (res.first()) {
-                return true;
+            User user = new User();
+            boolean userExists = false;
+            while (res.next()) {
+                userExists = true;
+                user.setEmail(res.getString("email"));
+                user.setFirstname(res.getString("firstname"));
+                user.setLastname(res.getString("lastname"));
+                user.setRole(res.getString("role"));
+                user.setAllowedToResetPassword(res.getBoolean("isAllowedToResetPwd"));
             }
-            else{
-                return false;
+            if (!userExists){
+                throw new SQLException();
             }
-            /* connection.close(); */
+            return user;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw e;
         }
     }
 
-    public User userLogin(Login login) throws SQLException {
+    public User isValidUser(Login login) throws SQLException {
         connectionData = new ConnectionData();
         try {
             Connection connection = DBConnector.getConnection(connectionData);

@@ -2,6 +2,7 @@ package com.ssdi.immersivepdf.controller;
 
 import com.ssdi.immersivepdf.dao.LoginUserDao;
 import com.ssdi.immersivepdf.model.Login.Login;
+import com.ssdi.immersivepdf.model.Register.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
@@ -14,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -45,15 +48,27 @@ public class UserLoginControllerTest {
         Login loginRequest = new Login();
         loginRequest.setEmail("brucewayne@gmail.com");
         loginRequest.setPassword("batman");
-        when(loginUserDao.login(loginRequest)).thenReturn(true);
-        assertTrue(loginUserDao.login(loginRequest));
+        User user =  new User();
+        user.setEmail("robert@gmail.com");
+        try {
+            when(loginUserDao.login(loginRequest)).thenReturn(user);
+            assertTrue(loginUserDao.login(loginRequest) == user);
+        }catch (SQLException e){
+            assertFalse(true);
+        }
     }
 
     @Test
     public void loginUserInvalid_WithMock() {
         Login loginRequest = new Login();
-        when(loginUserDao.login(loginRequest)).thenReturn(false);
-        assertTrue(loginUserDao.login(loginRequest) == false);
+        User user =  new User();
+        user.setEmail("robert@gmail.com");
+        try {
+            when(loginUserDao.login(loginRequest)).thenThrow(new SQLException());
+            assertFalse(loginUserDao.login(loginRequest) == user);
+        }catch (SQLException e){
+            assertTrue(true);
+        }
     }
 
     @Test
