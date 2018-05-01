@@ -43,13 +43,12 @@ public class AdminViewControllerTest {
 
     @Mock
     private UserDataDao userDataDao;
-
     @Mock
     private GetBooksDao getBooksDao;
+    @Mock
     private BookEntryDao bookEntryDao;
+
     private MockMvc mockMvc;
-    private Books mockBooks;
-    private Book bookMock;
 
     @InjectMocks
     private AdminViewController adminViewController;
@@ -62,10 +61,6 @@ public class AdminViewControllerTest {
     @After
     public void tearDown() throws Exception {
     }
-
-
-    // Test methods for fetching all user details.
-
 
     @Test
     public void getAllUserMvcMappingTest(){
@@ -83,8 +78,6 @@ public class AdminViewControllerTest {
             mockMvc.perform(MockMvcRequestBuilders.post("/admin/getUsers")
                     .contentType(MediaType.APPLICATION_JSON).content(request.toString()))
                     .andExpect(status().isOk());
-
-
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -231,6 +224,25 @@ public class AdminViewControllerTest {
         }
     }
 
+    @Test
+    public void deleteUserDaoTestUsingMock() {
+        User user1 = new User("Robert","Downey","robert@gmail.com","password",true);
+        try {
+            doAnswer(new Answer() {
+                @Override
+                public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                   return true;
+                }
+            }).when(userDataDao).deleteUser(user1);
+//            User user = new User("Robert","Downey","robert@gmail.com","password",true);
+            adminViewController.deleteUser(user1);
+            verify(userDataDao,times(1)).deleteUser(user1);
+        }catch (Exception e){
+            System.out.println(e.getLocalizedMessage());
+            assertFalse(true);
+        }
+    }
+
 
     @Test
     public void grantPrivilegeMvcMappingTest(){
@@ -263,6 +275,25 @@ public class AdminViewControllerTest {
         }
     }
 
+    @Test
+    public void grantPrivilegeTestDaoUsingMock() {
+        User user = new User("Robert","Downey","robert@gmail.com","password",true);
+
+        try {
+            doAnswer(new Answer() {
+                @Override
+                public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                    return false;
+                }
+            }).when(userDataDao).allowPasswordReset(user);
+            adminViewController.grantPrivilege(user);
+            verify(userDataDao,times(1)).allowPasswordReset(user);
+        }catch (Exception e){
+            System.out.println(e.getLocalizedMessage());
+            assertFalse(true);
+        }
+    }
+
 
     @Test
     public void deleteBookMvcMappingTest(){
@@ -290,6 +321,24 @@ public class AdminViewControllerTest {
             assertTrue(bookEntryDao.deleteBook(book) == 401);
         }catch (Exception e){
             System.out.println(e.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void deleteBookTestDaoUsingMock() {
+        Book book = new Book();
+        try {
+            doAnswer(new Answer() {
+                @Override
+                public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                    return 0;
+                }
+            }).when(bookEntryDao).deleteBook(book);
+            adminViewController.deleteBook(book);
+            verify(bookEntryDao,times(1)).deleteBook(book);
+        }catch (Exception e){
+            System.out.println(e.getLocalizedMessage());
+            assertFalse(true);
         }
     }
 
