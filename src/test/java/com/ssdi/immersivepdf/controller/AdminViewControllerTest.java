@@ -15,19 +15,26 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static org.apache.http.client.methods.RequestBuilder.post;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,6 +43,7 @@ public class AdminViewControllerTest {
 
     @Mock
     private UserDataDao userDataDao;
+
     @Mock
     private GetBooksDao getBooksDao;
     private BookEntryDao bookEntryDao;
@@ -75,9 +83,35 @@ public class AdminViewControllerTest {
             mockMvc.perform(MockMvcRequestBuilders.post("/admin/getUsers")
                     .contentType(MediaType.APPLICATION_JSON).content(request.toString()))
                     .andExpect(status().isOk());
+
+
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testGetAllUserDaoCallusingController(){
+        try {
+            doAnswer(new Answer() {
+                @Override
+                public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                    User user1 = new User("Courtney","Downey","robert@gmail.com","password",true);
+                    User user2 = new User("Robert","Downey","robert@gmail.com","password",true);
+                    Users users = new Users();
+                    ArrayList<User> userlist = new ArrayList<>();
+                    userlist.add(user1); userlist.add(user2);
+                    users.setUsers(userlist);
+                    return users;
+                }
+            }).when(userDataDao).getAllUsers();
+            User user = new User("Robert","Downey","robert@gmail.com","password",true);
+            adminViewController.getAllUsers(user);
+            verify(userDataDao,times(1)).getAllUsers();
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
     }
 
 
@@ -132,6 +166,31 @@ public class AdminViewControllerTest {
         }catch (Exception e){
             assertFalse(true);
             System.out.println(e.getLocalizedMessage());
+        }
+    }
+
+    @Test
+    public void getAllBooksDaoTestUsingMock() {
+
+        try {
+            doAnswer(new Answer() {
+                @Override
+                public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                    Book book1 = new Book();
+                    Books bookList = new Books();
+                    ArrayList<Book> bookArrayList =  new ArrayList<>();
+                    bookArrayList.add(book1);
+                    bookList.setBookCollection(bookArrayList);
+                    return bookList;
+                }
+            }).when(getBooksDao).getAllBooks();
+            User user = new User("Robert","Downey","robert@gmail.com","password",true);
+            adminViewController.viewUserBooks(user);
+            verify(getBooksDao,times(1)).getAllBooks();
+        }catch (Exception e){
+
+            System.out.println(e.getLocalizedMessage());
+            assertFalse(true);
         }
     }
 
