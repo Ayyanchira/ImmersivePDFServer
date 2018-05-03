@@ -181,7 +181,6 @@ public class AdminViewControllerTest {
             adminViewController.viewUserBooks(user);
             verify(getBooksDao,times(1)).getAllBooks();
         }catch (Exception e){
-
             System.out.println(e.getLocalizedMessage());
             assertFalse(true);
         }

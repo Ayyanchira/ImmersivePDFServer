@@ -1,6 +1,7 @@
 package com.ssdi.immersivepdf.dao;
 
 import com.ssdi.immersivepdf.model.View.Book;
+import com.ssdi.immersivepdf.model.admin.Users;
 import com.ssdi.immersivepdf.util.DBConnector;
 import com.ssdi.immersivepdf.util.TestConnectionData;
 import org.junit.After;
@@ -11,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -58,7 +60,27 @@ public class BookEntryDaoTest {
     @Test
     public void enterNewBook() {
         BookEntryDao bookEntryDao = new BookEntryDao();
-        bookEntryDao.enterNewBook("TestingBookDelete","C:Path","TestDescription","robertdowney@gmail.com");
+        int result = bookEntryDao.enterNewBook("TestingBookDelete","C:Path","TestDescription","robertdowney@gmail.com");
+        if (result != 200){
+            assertTrue(false);
+        }
+
+        //Check if the book actually got deleted
+
+        String sql = "SELECT * from BOOKS WHERE bookname = 'TestingBookDelete'";
+        boolean bookExist = false;
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet resultset = null;
+            resultset = pstmt.executeQuery();
+            while (resultset.next()){
+                bookExist = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        assertTrue(bookExist);
+
     }
 
     @Test
@@ -81,8 +103,30 @@ public class BookEntryDaoTest {
             bookToDelete.setBookid(bookid);
             BookEntryDao bookEntryDao = new BookEntryDao();
             int result = bookEntryDao.deleteBook(bookToDelete);
+
+
+
             System.out.println("Result of delete book operation : " + result);
             assertTrue(result == 200);
+
+
+            //Check if the book actually got deleted
+
+            sql = "SELECT * from BOOKS WHERE bookid = '"+bookid+"'";
+            boolean bookExist = false;
+            try {
+                pstmt = connection.prepareStatement(sql);
+                ResultSet resultset = null;
+                resultset = pstmt.executeQuery();
+                while (resultset.next()){
+                    bookExist = true;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            assertFalse(bookExist);
+
+
 
         }catch (SQLException e){
             System.out.println(e.getMessage());

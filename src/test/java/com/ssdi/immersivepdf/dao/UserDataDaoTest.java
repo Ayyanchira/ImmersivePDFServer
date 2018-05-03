@@ -82,6 +82,7 @@ public class UserDataDaoTest {
             String emailFromDao = user.getEmail();
             String emailFromTestSetup = userCollection.get(0).getEmail();
 
+            //Checking email parameter of first returned object
             if (emailFromDao.equals(emailFromTestSetup)){
                 assertTrue(true);
             }else {
@@ -98,6 +99,25 @@ public class UserDataDaoTest {
     public void deleteUserWithExistingCredential() {
         UserDataDao userDataDao = new UserDataDao();
         assertTrue(userDataDao.deleteUser(user) == true);
+        String emailId = user.getEmail();
+
+        //Verifying if the user actually got deleted from the database
+        String sql = "SELECT * from USER WHERE email = '"+emailId+"'";
+        boolean userExist = false;
+        try {
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        ResultSet resultset = null;
+        resultset = pstmt.executeQuery();
+        userCollection = new ArrayList<>();
+        while (resultset.next()){
+           userExist = true;
+        }
+        Users allusers = new Users();
+        allusers.setUsers(userCollection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        assertFalse(userExist);
     }
 
     @Test
