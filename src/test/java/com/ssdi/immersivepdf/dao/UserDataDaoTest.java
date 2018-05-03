@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -19,9 +20,8 @@ public class UserDataDaoTest {
 
     Connection connection;
     TestConnectionData connectionData;
-    int userCount;
     User user;
-
+    ArrayList<User> userCollection;
     @Before
     public void setUp() throws Exception {
         connectionData = new TestConnectionData();
@@ -29,7 +29,6 @@ public class UserDataDaoTest {
 
         String sql;
         PreparedStatement pstmt;
-        userCount = 0;
         try {
             connection = DBConnector.getConnection(connectionData);
 
@@ -37,9 +36,18 @@ public class UserDataDaoTest {
             sql = "SELECT * from USER";
             pstmt = connection.prepareStatement(sql);
             ResultSet resultset = pstmt.executeQuery();
+            userCollection = new ArrayList<>();
             while (resultset.next()){
-                userCount++;
+                User user = new User();
+                user.setEmail(resultset.getString("email"));
+                user.setFirstname(resultset.getString("firstname"));
+                user.setLastname(resultset.getString("lastname"));
+                user.setRole("User");
+                user.setAllowedToResetPassword(resultset.getBoolean("isAllowedToResetPwd"));
+                userCollection.add(user);
             }
+            Users allusers = new Users();
+            allusers.setUsers(userCollection);
 
 
             //Deleting the user and collection of books from database.
@@ -63,14 +71,23 @@ public class UserDataDaoTest {
     public void tearDown() throws Exception {
     }
 
-
-
     @Test
     public void getAllUsers() {
         UserDataDao userDataDao = new UserDataDao();
         try{
             Users users = userDataDao.getAllUsers();
-            assertTrue(users.getUsers().size() == userCount);
+            assertTrue(users.getUsers().size() == userCollection.size());
+            User user = users.getUsers().get(0);
+            System.out.println(user.getEmail() + " and from the collection " + userCollection.get(0).getEmail());
+            String emailFromDao = user.getEmail();
+            String emailFromTestSetup = userCollection.get(0).getEmail();
+
+            if (emailFromDao.equals(emailFromTestSetup)){
+                assertTrue(true);
+            }else {
+                assertFalse(true);
+            }
+
         }catch (SQLException e){
             System.out.println(e.getMessage());
             assertTrue(false);
