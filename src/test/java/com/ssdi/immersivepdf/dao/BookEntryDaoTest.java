@@ -103,15 +103,11 @@ public class BookEntryDaoTest {
             bookToDelete.setBookid(bookid);
             BookEntryDao bookEntryDao = new BookEntryDao();
             int result = bookEntryDao.deleteBook(bookToDelete);
-
-
-
             System.out.println("Result of delete book operation : " + result);
             assertTrue(result == 200);
 
 
             //Check if the book actually got deleted
-
             sql = "SELECT * from BOOKS WHERE bookid = '"+bookid+"'";
             boolean bookExist = false;
             try {
@@ -125,9 +121,6 @@ public class BookEntryDaoTest {
                 e.printStackTrace();
             }
             assertFalse(bookExist);
-
-
-
         }catch (SQLException e){
             System.out.println(e.getMessage());
             assertTrue(false);
